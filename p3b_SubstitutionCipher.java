@@ -1,61 +1,37 @@
-// 3.B)Write a java program to perform encryption and decryption using the Substitution cipher 
-// algorithm? 
-// Program: 
-
-import java.util.Scanner;
+import java.util.*;
 
 public class p3b_SubstitutionCipher {
 
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static String encrypt(String message, String key) {
-        StringBuilder encryptedMessage = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         message = message.toUpperCase();
-        for (int i = 0; i < message.length(); i++) {
-            char currentChar = message.charAt(i);
-            if (Character.isLetter(currentChar)) {
-                int indexInAlphabet = ALPHABET.indexOf(currentChar);
-                char encryptedChar = key.charAt(indexInAlphabet);
-                encryptedMessage.append(encryptedChar);
-            } else {
-                encryptedMessage.append(currentChar);
-            }
+        for (char ch : message.toCharArray()) {
+            result.append(Character.isLetter(ch) ? key.charAt(ALPHABET.indexOf(ch)) : ch);
         }
-        return encryptedMessage.toString();
+        return result.toString();
     }
 
     public static String decrypt(String encryptedMessage, String key) {
-        StringBuilder decryptedMessage = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         encryptedMessage = encryptedMessage.toUpperCase();
-        for (int i = 0; i < encryptedMessage.length(); i++) {
-            char currentChar = encryptedMessage.charAt(i);
-            // If character is an alphabetic letter 
-            if (Character.isLetter(currentChar)) {
-                int indexInKey = key.indexOf(currentChar);
-                char decryptedChar = ALPHABET.charAt(indexInKey);
-                decryptedMessage.append(decryptedChar);
-            } else {
-                // Non-alphabet characters are added as-is 
-                decryptedMessage.append(currentChar);
-            }
+        for (char ch : encryptedMessage.toCharArray()) {
+            result.append(Character.isLetter(ch) ? ALPHABET.charAt(key.indexOf(ch)) : ch);
         }
-        return decryptedMessage.toString();
+        return result.toString();
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // Define the substitution key (26 unique uppercase letters) 
-        String key = "QWERTYUIOPLKJHGFDSAZXCVBNM"; // Example key, can be any permutation of 26 letters 
+        String key = "QWERTYUIOPLKJHGFDSAZXCVBNM"; // Example substitution key
         System.out.println("Using substitution key: " + key);
-        // Input the message to encrypt 
         System.out.print("Enter the message to encrypt: ");
         String message = scanner.nextLine();
-        // Encrypt the message 
-        String encryptedMessage = encrypt(message, key);
-        System.out.println("Encrypted Message: " + encryptedMessage);
-        // Decrypt the message 
-        String decryptedMessage = decrypt(encryptedMessage, key);
-        System.out.println("Decrypted Message: " + decryptedMessage);
+        String encrypted = encrypt(message, key);
+        String decrypted = decrypt(encrypted, key);
+        System.out.println("Encrypted Message: " + encrypted);
+        System.out.println("Decrypted Message: " + decrypted);
         scanner.close();
     }
 }
