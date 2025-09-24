@@ -8,9 +8,8 @@ public class p1_XORWithZero {
         String text = "Hello World";
         System.out.println("Original String: " + text);
         
-        System.out.print("XOR with 0 result: ");
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
+        System.out.print("XOR with 0 result:  ");
+        for (char c : text.toCharArray()) {
             char xorResult = (char) (c ^ 0);
             System.out.print(xorResult);
         }
