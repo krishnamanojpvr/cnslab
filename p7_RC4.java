@@ -1,10 +1,7 @@
 // 7.Write a java program the RC4 logic using cryptography; encrypt the text "Hello World" using RC4. 
 // Create your own key using java key tool
 
-import java.util.Base64;
-import java.util.Scanner;
-import java.util.function.*;
-import java.util.stream.IntStream;
+import java.util.*;
 
 public class p7_RC4 {
 
@@ -19,42 +16,44 @@ public class p7_RC4 {
         init(key);
     }
 
-    // Swap elements in the array S
-    private BiConsumer<Integer, Integer> swap = (i, j) -> {
-        byte temp = S[i];
-        S[i] = S[j];
-        S[j] = temp;
-    };
-
     // Initialize the permutation in the array S
     private void init(byte[] key) {
         int keyLength = key.length;
-        IntStream.range(0, 256).forEach(i -> S[i] = (byte) i); // initialize the array S
+        for (int i = 0; i < 256; i++) {
+            S[i] = (byte) i;
+        }
         int j = 0;
         for (int i = 0; i < 256; i++) {
             j = (j + S[i] + key[i % keyLength]) & 0xFF;
-            swap.accept(i, j);
+            swap(i, j);
         }
     }
 
-    // Generate the next byte of the key stream
-    private Supplier<Byte> keyItem = () -> {
-        x = (x + 1) & 0xFF;
-        y = (y + S[x]) & 0xFF;
-        swap.accept(x, y);
-        return S[(S[x] + S[y]) & 0xFF];
-    };
+    // Swap elements in the array S
+    private void swap(int i, int j) {
+        byte temp = S[i];
+        S[i] = S[j];
+        S[j] = temp;
+    }
 
     // Generate the key stream and perform encryption/decryption
     public byte[] encrypt(byte[] plaintext) {
         byte[] ciphertext = new byte[plaintext.length];
         for (int i = 0; i < plaintext.length; i++) {
-            ciphertext[i] = (byte) (plaintext[i] ^ keyItem.get());
+            ciphertext[i] = (byte) (plaintext[i] ^ keyItem());
         }
         return ciphertext;
     }
 
-    public static void main(String... rc4Algo) {
+    // Generate the next byte of the key stream
+    private byte keyItem() {
+        x = (x + 1) & 0xFF;
+        y = (y + S[x]) & 0xFF;
+        swap(x, y);
+        return S[(S[x] + S[y]) & 0xFF];
+    }
+
+    public static void main(String[] args) {
         String keyString;
         String plaintext;
 
