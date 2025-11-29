@@ -10,7 +10,7 @@ public class p4_DESExample {
 
     public static SecretKey generateKey() throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-        keyGenerator.init(56); // DES uses a 56-bit key size 
+        keyGenerator.init(56); // DES uses a 56-bit key size
         return keyGenerator.generateKey();
     }
 

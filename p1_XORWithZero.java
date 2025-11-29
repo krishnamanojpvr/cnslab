@@ -7,7 +7,7 @@ public class p1_XORWithZero {
     public static void main(String[] args) {
         String text = "Hello World";
         System.out.println("Original String: " + text);
-        
+
         System.out.print("XOR with 0 result:  ");
         for (char c : text.toCharArray()) {
             char xorResult = (char) (c ^ 0);

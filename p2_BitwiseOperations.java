@@ -2,7 +2,7 @@
 // program should AND or and XOR each character in this string with 127 and displays the result. 
 // Program: 
 
-public class p2_BitwiseOperations{
+public class p2_BitwiseOperations {
 
     public static void main(String[] args) {
         String text = "Hello World";

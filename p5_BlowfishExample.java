@@ -10,7 +10,7 @@ public class p5_BlowfishExample {
 
     public static SecretKey generateKey(int keySize) throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("Blowfish");
-        keyGenerator.init(keySize); // keySize can be between 32 and 448 bits 
+        keyGenerator.init(keySize); // keySize can be between 32 and 448 bits
         return keyGenerator.generateKey();
     }
 
@@ -30,7 +30,7 @@ public class p5_BlowfishExample {
 
     public static void main(String[] args) {
         try {
-            SecretKey secretKey = generateKey(128); 
+            SecretKey secretKey = generateKey(128);
             String plaintext = "Hello, World!";
             System.out.println("Original Text: " + plaintext);
             String encryptedText = encrypt(plaintext, secretKey);

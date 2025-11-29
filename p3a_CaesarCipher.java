@@ -7,19 +7,19 @@ import java.util.Scanner;
 public class p3a_CaesarCipher {
 
     public static String encrypt(String message, int shift) {
-    StringBuilder result = new StringBuilder();
-    for (char ch : message.toCharArray()) {
-        if (Character.isUpperCase(ch))
-            ch = (char) ((ch - 'A' + shift) % 26 + 'A');
-        else if (Character.isLowerCase(ch))
-            ch = (char) ((ch - 'a' + shift) % 26 + 'a');
-        result.append(ch);
+        StringBuilder result = new StringBuilder();
+        for (char ch : message.toCharArray()) {
+            if (Character.isUpperCase(ch))
+                ch = (char) ((ch - 'A' + shift) % 26 + 'A');
+            else if (Character.isLowerCase(ch))
+                ch = (char) ((ch - 'a' + shift) % 26 + 'a');
+            result.append(ch);
+        }
+        return result.toString();
     }
-    return result.toString();
-}
 
     public static String decrypt(String message, int shift) {
-        return encrypt(message, 26 - shift); // Decrypt is reverse of encrypt with 26 - shift 
+        return encrypt(message, 26 - shift); // Decrypt is reverse of encrypt with 26 - shift
     }
 
     public static void main(String[] args) {

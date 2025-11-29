@@ -15,35 +15,35 @@ public class p8_RSAExample {
 
     public static void main(String[] args) {
         try {
-// Generate RSA key pair 
+            // Generate RSA key pair
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048); // Key size (2048 bits for strong security) 
+            keyPairGenerator.initialize(2048); // Key size (2048 bits for strong security)
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
-// Print the key details 
+            // Print the key details
             printKeyDetails(publicKey, privateKey);
-// Text to be encrypted 
+            // Text to be encrypted
             String plaintext = "Hello, RSA!";
             System.out.println("Original Text: " + plaintext);
-// Encrypt the text using the public key 
+            // Encrypt the text using the public key
             byte[] encryptedText = encrypt(plaintext, publicKey);
             System.out.println("Encrypted Text: " + new String(encryptedText));
-// Decrypt the text using the private key 
+            // Decrypt the text using the private key
             String decryptedText = decrypt(encryptedText, privateKey);
             System.out.println("Decrypted Text: " + decryptedText);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-// Method to encrypt data using RSA 
+    // Method to encrypt data using RSA
 
     public static byte[] encrypt(String plaintext, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         return cipher.doFinal(plaintext.getBytes());
     }
-// Method to decrypt data using RSA 
+    // Method to decrypt data using RSA
 
     public static String decrypt(byte[] ciphertext, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
@@ -51,7 +51,7 @@ public class p8_RSAExample {
         byte[] decryptedBytes = cipher.doFinal(ciphertext);
         return new String(decryptedBytes);
     }
-// Method to print the details of the RSA keys 
+    // Method to print the details of the RSA keys
 
     public static void printKeyDetails(PublicKey publicKey, PrivateKey privateKey) throws Exception {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
