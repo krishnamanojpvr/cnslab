@@ -4,22 +4,25 @@
 import java.security.*;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 import javax.crypto.Cipher;
 
 public class p8_RSAExample {
 
     // Method to encrypt data using RSA
-    public static byte[] encrypt(String plaintext, PublicKey publicKey) throws Exception {
+    public static String encrypt(String plaintext, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        return cipher.doFinal(plaintext.getBytes());
+
+        byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
-    // Method to decrypt data using RSA
-    public static String decrypt(byte[] ciphertext, PrivateKey privateKey) throws Exception {
+    // Decrypt String and return String
+    public static String decrypt(String ciphertext, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedBytes = cipher.doFinal(ciphertext);
+        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(ciphertext));
         return new String(decryptedBytes);
     }
 
@@ -37,8 +40,8 @@ public class p8_RSAExample {
             String plaintext = "Hello, RSA!";
             System.out.println("Original Text: " + plaintext);
             // Encrypt the text using the public key
-            byte[] encryptedText = encrypt(plaintext, publicKey);
-            System.out.println("Encrypted Text: " + new String(encryptedText));
+            String encryptedText = encrypt(plaintext, publicKey);
+            System.out.println("Encrypted Text: " + encryptedText);
             // Decrypt the text using the private key
             String decryptedText = decrypt(encryptedText, privateKey);
             System.out.println("Decrypted Text: " + decryptedText);
