@@ -1,17 +1,27 @@
 // 8.Write a java program to implement RSA algorithm? 
 // Program: 
 
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import javax.crypto.Cipher;
 
 public class p8_RSAExample {
+
+    // Method to encrypt data using RSA
+    public static byte[] encrypt(String plaintext, PublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        return cipher.doFinal(plaintext.getBytes());
+    }
+
+    // Method to decrypt data using RSA
+    public static String decrypt(byte[] ciphertext, PrivateKey privateKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] decryptedBytes = cipher.doFinal(ciphertext);
+        return new String(decryptedBytes);
+    }
 
     public static void main(String[] args) {
         try {
@@ -36,21 +46,7 @@ public class p8_RSAExample {
             e.printStackTrace();
         }
     }
-    // Method to encrypt data using RSA
 
-    public static byte[] encrypt(String plaintext, PublicKey publicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        return cipher.doFinal(plaintext.getBytes());
-    }
-    // Method to decrypt data using RSA
-
-    public static String decrypt(byte[] ciphertext, PrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedBytes = cipher.doFinal(ciphertext);
-        return new String(decryptedBytes);
-    }
     // Method to print the details of the RSA keys
 
     public static void printKeyDetails(PublicKey publicKey, PrivateKey privateKey) throws Exception {

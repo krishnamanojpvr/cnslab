@@ -5,7 +5,7 @@ import java.util.*;
 
 public class p7_RC4 {
 
-    private byte[] S; // state array
+    private final byte[] S; // state array
     private int x, y; //
 
     // Constructor to initialize the key
