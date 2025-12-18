@@ -5,76 +5,51 @@ import java.util.*;
 
 public class p7_RC4 {
 
-    private final byte[] S; // state array
-    private int x, y; //
-
-    // Constructor to initialize the key
-    public p7_RC4(byte[] key) {
-        this.x = 0;
-        this.y = 0;
-        this.S = new byte[256];
-        init(key);
-    }
-
-    // Initialize the permutation in the array S
-    private void init(byte[] key) {
-        int keyLength = key.length;
-        for (int i = 0; i < 256; i++) {
-            S[i] = (byte) i;
-        }
+    public static byte[] rc4(byte[] data, byte[] key) {
+        int[] S = new int[256];
         int j = 0;
+
+        // Key Scheduling Algorithm (KSA)
+        for (int i = 0; i < 256; i++)
+            S[i] = i;
+
         for (int i = 0; i < 256; i++) {
-            j = (j + S[i] + key[i % keyLength]) & 0xFF;
-            swap(i, j);
+            j = (j + S[i] + key[i % key.length]) & 255;
+            int temp = S[i];
+            S[i] = S[j];
+            S[j] = temp;
         }
-    }
 
-    // Swap elements in the array S
-    private void swap(int i, int j) {
-        byte temp = S[i];
-        S[i] = S[j];
-        S[j] = temp;
-    }
+        // Pseudo-Random Generation Algorithm (PRGA)
+        byte[] result = new byte[data.length];
+        int i = 0;
+        j = 0;
 
-    // Generate the key stream and perform encryption/decryption
-    public byte[] encrypt(byte[] plaintext) {
-        byte[] ciphertext = new byte[plaintext.length];
-        for (int i = 0; i < plaintext.length; i++) {
-            ciphertext[i] = (byte) (plaintext[i] ^ keyItem());
+        for (int k = 0; k < data.length; k++) {
+            i = (i + 1) & 255;
+            j = (j + S[i]) & 255;
+
+            int temp = S[i];
+            S[i] = S[j];
+            S[j] = temp;
+
+            int keyStream = S[(S[i] + S[j]) & 255];
+            result[k] = (byte) (data[k] ^ keyStream);
         }
-        return ciphertext;
-    }
 
-    // Generate the next byte of the key stream
-    private byte keyItem() {
-        x = (x + 1) & 0xFF;
-        y = (y + S[x]) & 0xFF;
-        swap(x, y);
-        return S[(S[x] + S[y]) & 0xFF];
+        return result;
     }
 
     public static void main(String[] args) {
-        String keyString;
-        String plaintext;
 
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.print("Enter encryption key:");
-            keyString = sc.nextLine();
+        String key = "mysecretkey"; // user-defined key
+        String plaintext = "Hello World"; // given text
 
-            System.out.print("Enter Plain text :");
-            plaintext = sc.nextLine();
-        }
+        byte[] encrypted = rc4(plaintext.getBytes(), key.getBytes());
+        byte[] decrypted = rc4(encrypted, key.getBytes());
 
-        // Create RC4 instance with the key
-        p7_RC4 rc4Encrypt = new p7_RC4(keyString.getBytes());
-        byte[] encryptedBytes = rc4Encrypt.encrypt(plaintext.getBytes());
-
-        p7_RC4 rc4Decrypt = new p7_RC4(keyString.getBytes()); // use two different objects for encryption and decryption
-        byte[] decryptedBytes = rc4Decrypt.encrypt(encryptedBytes);
-
-        System.out.println("Original : " + plaintext);
-        System.out.println("Encrypted: " + Base64.getEncoder().encodeToString(encryptedBytes));
-        System.out.println("Decrypted: " + new String(decryptedBytes));
-
+        System.out.println("Original Text : " + plaintext);
+        System.out.println("Encrypted Text: " + Base64.getEncoder().encodeToString(encrypted));
+        System.out.println("Decrypted Text: " + new String(decrypted));
     }
 }
